@@ -1,0 +1,31 @@
+name: build
+on: [push, pull_request]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      BUNDLE_BUILD__DUCKDB: "--with-duckdb-include=/home/runner/libduckdb --with-duckdb-lib=/home/runner/libduckdb"
+      DUCKDB_VERSION: 1.4.0
+      TEST_POSTGRES: true
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/cache@v4
+        with:
+          path: ~/libduckdb
+          key: libduckdb-${{ env.DUCKDB_VERSION }}
+        id: cache-libduckdb
+      - name: Download libduckdb
+        if: steps.cache-libduckdb.outputs.cache-hit != 'true'
+        run: |
+          cd ~
+          wget -q https://github.com/duckdb/duckdb/releases/download/v$DUCKDB_VERSION/libduckdb-linux-amd64.zip
+          unzip -q -d libduckdb libduckdb-linux-amd64.zip
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.4
+          bundler-cache: true
+      - run: docker compose up -d
+      - uses: ankane/setup-postgres@v1
+        with:
+          database: seaduck_test
+      - run: bundle exec rake test

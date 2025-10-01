@@ -24,7 +24,7 @@ jobs:
         with:
           ruby-version: 3.4
           bundler-cache: true
-      - run: docker compose up -d
+      - run: docker compose up -d --quiet-pull
       - uses: ankane/setup-postgres@v1
         with:
           database: seaduck_test

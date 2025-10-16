@@ -106,6 +106,14 @@ class CatalogTest < Minitest::Test
     assert_equal "Unsupported data source type: pg", error.message
   end
 
+  def test_extension_version
+    assert_equal "79237316", catalog.extension_version
+  end
+
+  def test_duckdb_version
+    assert_equal "v1.4.1", catalog.duckdb_version
+  end
+
   def test_inspect
     assert_equal catalog.inspect, catalog.to_s
     refute_match "@db", catalog.inspect

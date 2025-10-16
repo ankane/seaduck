@@ -109,6 +109,16 @@ module SeaDuck
       nil
     end
 
+    # experimental
+    def extension_version
+      execute("SELECT extension_version FROM duckdb_extensions() WHERE extension_name = ?", ["iceberg"]).first["extension_version"]
+    end
+
+    # experimental
+    def duckdb_version
+      execute("SELECT VERSION() AS version").first["version"]
+    end
+
     # libduckdb does not provide function
     # https://duckdb.org/docs/stable/sql/dialect/keywords_and_identifiers.html
     def quote_identifier(value)

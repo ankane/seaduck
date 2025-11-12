@@ -42,16 +42,16 @@ class SqlTest < Minitest::Test
 
   def test_update
     create_events
-    assert_raises(SeaDuck::NotImplementedError) do
-      catalog.sql("UPDATE events SET b = ? WHERE a = ?", ["two!", 2])
-    end
+    catalog.sql("UPDATE events SET b = ? WHERE a = ?", ["two!", 2])
+    result = catalog.sql("SELECT * FROM events")
+    assert_equal [[1, "one"], [2, "two!"], [3, "three"]], result.rows.sort_by(&:first)
   end
 
   def test_delete
     create_events
-    assert_raises(SeaDuck::NotImplementedError) do
-      catalog.sql("DELETE FROM events WHERE a = ?", [2])
-    end
+    catalog.sql("DELETE FROM events WHERE a = ?", [2])
+    result = catalog.sql("SELECT * FROM events")
+    assert_equal [[1, "one"], [3, "three"]], result.rows
   end
 
   def test_view

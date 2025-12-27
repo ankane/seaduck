@@ -22,7 +22,7 @@ jobs:
           unzip -q -d libduckdb libduckdb-linux-amd64.zip
       - uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 3.4
+          ruby-version: "4.0"
           bundler-cache: true
       - run: docker compose up -d --quiet-pull
       - uses: ankane/setup-postgres@v1

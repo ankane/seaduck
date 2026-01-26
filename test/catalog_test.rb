@@ -107,11 +107,11 @@ class CatalogTest < Minitest::Test
   end
 
   def test_extension_version
-    assert_equal "1c0c4c60", catalog.extension_version
+    assert_equal "1095c1fa", catalog.extension_version
   end
 
   def test_duckdb_version
-    assert_equal "v1.4.3", catalog.duckdb_version
+    assert_equal "v1.4.4", catalog.duckdb_version
   end
 
   def test_inspect

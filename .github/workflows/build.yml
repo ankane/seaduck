@@ -2,10 +2,14 @@ name: build
 on: [push, pull_request]
 jobs:
   build:
+    strategy:
+      fail-fast: false
+      matrix:
+        duckdb: [1.5.0, 1.4.4]
     runs-on: ubuntu-latest
     env:
       BUNDLE_BUILD__DUCKDB: "--with-duckdb-include=/home/runner/libduckdb --with-duckdb-lib=/home/runner/libduckdb"
-      DUCKDB_VERSION: 1.4.4
+      DUCKDB_VERSION: ${{ matrix.duckdb }}
       TEST_POSTGRES: true
     steps:
       - uses: actions/checkout@v6

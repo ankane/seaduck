@@ -5,7 +5,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        duckdb: [1.5.0, 1.4.4]
+        include:
+          - ruby: "4.0"
+            duckdb: 1.5.0
+          - ruby: 3.4
+            duckdb: 1.4.4
     runs-on: ubuntu-latest
     env:
       BUNDLE_BUILD__DUCKDB: "--with-duckdb-include=/home/runner/libduckdb --with-duckdb-lib=/home/runner/libduckdb"
@@ -26,7 +30,7 @@ jobs:
           unzip -q -d libduckdb libduckdb-linux-amd64.zip
       - uses: ruby/setup-ruby@v1
         with:
-          ruby-version: "4.0"
+          ruby-version: ${{ matrix.ruby }}
           bundler-cache: true
       - run: docker compose up -d --quiet-pull
       - uses: ankane/setup-postgres@v1

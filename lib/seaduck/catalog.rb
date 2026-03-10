@@ -14,12 +14,10 @@ module SeaDuck
       create_secret(secret_options) if secret_options
       attach_with_options(@catalog, url, {type: "iceberg"}.merge(attach_options))
 
-      begin
-        use_namespace(@default_namespace)
-      rescue Error
+      unless namespace_exists?(@default_namespace)
         create_namespace(@default_namespace, if_not_exists: true)
-        use_namespace(@default_namespace)
       end
+      use_namespace(@default_namespace)
       execute("DETACH memory")
     end
 

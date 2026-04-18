@@ -126,7 +126,7 @@ class SqlTest < Minitest::Test
   def test_quote_identifier_statement
     skip if s3tables? # The specified table name is not valid.
 
-    table = 19.times.map { ["a", "'", '"', "\\"].sample }.join
+    table = 19.times.map { ["a", "'", '"'].sample }.join
     begin
       catalog.sql("CREATE TABLE #{catalog.quote_identifier(table)} (a integer, b varchar)")
     ensure

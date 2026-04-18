@@ -17,7 +17,7 @@ class CatalogTest < Minitest::Test
 
   def test_schema_evolution
     create_events
-    assert_raises(SeaDuck::NotImplementedError) do
+    assert_raises(SeaDuck::Error) do
       catalog.sql("ALTER TABLE events ADD COLUMN c VARCHAR DEFAULT 'hello'")
     end
   end

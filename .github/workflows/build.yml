@@ -7,9 +7,9 @@ jobs:
       matrix:
         include:
           - ruby: "4.0"
-            duckdb: 1.5.3
+            duckdb: 1.5.4
           - ruby: 3.4
-            duckdb: 1.4.4
+            duckdb: 1.4.5
     runs-on: ubuntu-latest
     env:
       BUNDLE_BUILD__DUCKDB: "--with-duckdb-include=/home/runner/libduckdb --with-duckdb-lib=/home/runner/libduckdb"

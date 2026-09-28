@@ -26,9 +26,7 @@ class Minitest::Test
           uri: "http://#{host}:8181",
           _secret_options: {
             type: "s3",
-            key_id: "admin",
-            secret: "password",
-            endpoint: "#{host}:9000",
+            endpoint: "#{host}:8333",
             url_style: "path",
             use_ssl: 0
           },
@@ -49,6 +47,10 @@ class Minitest::Test
     {
       default_namespace: "seaduck_test"
     }
+  end
+
+  def rest?
+    $catalog == "rest"
   end
 
   def s3tables?

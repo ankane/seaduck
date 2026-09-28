@@ -32,7 +32,11 @@ jobs:
         with:
           ruby-version: ${{ matrix.ruby }}
           bundler-cache: true
-      - run: docker compose up -d --quiet-pull
+      - run: echo /home/linuxbrew/.linuxbrew/bin >> $GITHUB_PATH
+      - run: |
+          brew install seaweedfs
+          cd ~
+          weed mini -tableBucket=seaduck-test &
       - uses: ankane/setup-postgres@v1
         with:
           database: seaduck_test

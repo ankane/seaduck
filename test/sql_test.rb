@@ -127,19 +127,30 @@ class SqlTest < Minitest::Test
     skip if s3tables? # The specified table name is not valid.
 
     table = 19.times.map { ["a", "'", '"'].sample }.join
-    begin
-      catalog.sql("CREATE TABLE #{catalog.quote_identifier(table)} (a integer, b varchar)")
-    ensure
-      catalog.drop_table(table, if_exists: true)
+    if rest?
+      error = assert_raises(SeaDuck::Error) do
+        catalog.sql("CREATE TABLE #{catalog.quote_identifier(table)} (a integer, b varchar)")
+      end
+      assert_match(/invalid table name|table name must start with a letter or digit/, error.message)
+    else
+      begin
+        catalog.sql("CREATE TABLE #{catalog.quote_identifier(table)} (a integer, b varchar)")
+      ensure
+        catalog.drop_table(table, if_exists: true)
+      end
     end
   end
 
   def test_quote_identifier_schema
     create_events
-    error = assert_raises(SeaDuck::CatalogError) do
+    error = assert_raises(SeaDuck::Error) do
       catalog.sql("COPY #{catalog.quote_identifier("seaduck_test.events")} FROM 'test/support/data.csv'")
     end
-    assert_match "Table with name seaduck_test.events does not exist!", error.message
+    if rest?
+      assert_match "invalid table name", error.message
+    else
+      assert_match "Table with name seaduck_test.events does not exist!", error.message
+    end
     assert_equal 3, catalog.sql("SELECT * FROM seaduck_test.events").count
   end
 

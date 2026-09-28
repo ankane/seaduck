@@ -107,7 +107,7 @@ class CatalogTest < Minitest::Test
   end
 
   def test_extension_version
-    assert_match(/\A[0-9a-f]{8}\z/, catalog.extension_version)
+    assert_match(/\A[0-9a-f]{9}\z/, catalog.extension_version)
   end
 
   def test_duckdb_version

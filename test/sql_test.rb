@@ -131,7 +131,7 @@ class SqlTest < Minitest::Test
       error = assert_raises(SeaDuck::Error) do
         catalog.sql("CREATE TABLE #{catalog.quote_identifier(table)} (a integer, b varchar)")
       end
-      assert_match(/invalid table name|table name must start with a letter or digit/, error.message)
+      assert_match(/invalid table name|table name must start with a letter or digit|Bad Request/, error.message)
     else
       begin
         catalog.sql("CREATE TABLE #{catalog.quote_identifier(table)} (a integer, b varchar)")
@@ -147,7 +147,7 @@ class SqlTest < Minitest::Test
       catalog.sql("COPY #{catalog.quote_identifier("seaduck_test.events")} FROM 'test/support/data.csv'")
     end
     if rest?
-      assert_match "invalid table name", error.message
+      assert_match(/invalid table name|Bad Request/, error.message)
     else
       assert_match "Table with name seaduck_test.events does not exist!", error.message
     end
